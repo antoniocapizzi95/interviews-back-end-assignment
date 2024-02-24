@@ -7,16 +7,21 @@ import { ProductsService } from './products/products.service';
 import { CategoriesService } from './categories/categories.service';
 import { ProductRepository } from './repositories/mocks/product.repository';
 import { CategoryRepository } from './repositories/mocks/category.repository';
+import { OrdersController } from './orders/orders.controller';
+import { OrdersService } from './orders/orders.service';
+import { PaymentServiceFactory } from './payments/payment.service.factory';
 
 @Module({
   imports: [],
-  controllers: [AppController, ProductsController, CategoriesController],
+  controllers: [AppController, ProductsController, CategoriesController, OrdersController],
   providers: [
     AppService,
     ProductsService,
     CategoriesService,
     ProductRepository,
     CategoryRepository,
+    PaymentServiceFactory,
+    OrdersService,
   ],
 })
 export class AppModule {}
