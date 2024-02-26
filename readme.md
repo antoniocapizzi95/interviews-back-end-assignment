@@ -87,4 +87,188 @@ Update the system to include this information in the whole process.
 
 ## How to run
 
-...
+To run the project, you will need to follow these steps:
+
+1. Clone this repository.
+
+2. On project root create a ```.env``` file and copy the contents of the ```.env.sample``` file already present in the repository.
+
+3. Make sure you have Docker installed on your machine.
+
+4. Run the following command to start the project:
+
+    ```docker-compose up```
+
+The project will start on the default port 3000.
+
+On the .env file, it is possible to set the variable 'DISABLE_PAYMENT', which allows the order to be executed by skipping the call to the external service making the payment. If you want to see how the application works with the call to the payment service, simply change the value of "DISABLE_PAYMENT" from "true" to empty (the call will fail because the payment service is fake).
+
+
+## API Documentation
+
+This section documents the endpoints exposed by the application. It should be noted that the project was developed up to Challange 3, the database is mocked up in memory.
+
+### Base URL
+
+All URLs referenced in the documentation have the following base:
+
+http://localhost:3000
+
+
+This base URL will change according to the environment where the API is deployed.
+
+### Products
+
+ List All Products
+
+- **GET** `/products`
+- **Description**: Retrieve a list of all available products, with optional pagination.
+- **Query Parameters**:
+  - `page` (optional): The page number of the products list.
+  - `limit` (optional): The number of products per page.
+- **Success Response**: `200 OK`
+- **Example Request**:
+  
+    ```http
+    GET /products?page=1&limit=10
+    ```
+- **Example Response**:
+    ```json
+    {
+        "data": [
+            {
+                "id": 1,
+                "name": "prod1",
+                "image": "imgurl",
+                "price": 100,
+                "availableQuantity": 10,
+                "categoryId": 1
+            }
+        ],
+        "page": 1,
+        "limit": 1,
+        "totalPages": 1,
+        "totalItems": 1
+    }
+    ```
+
+Search Products
+
+- **GET** /products/search
+- **Description**: Search for products by name.
+- **Query Parameters**:
+    - `name`: The name or partial name of the product to search for.
+- **Success Response**: 200 OK
+- **Example Request**:
+    ```http
+    GET /products/search?name=apple
+    ```
+- **Example Response**:
+    ```json
+    [
+        {
+            "id": 1,
+            "name": "apple",
+            "image": "imgurl",
+            "price": 100,
+            "availableQuantity": 10,
+            "categoryId": 1
+        }
+    ]
+    ```
+
+List Products by Category
+
+- **GET** /products/category/:categoryId
+- **Description**: Retrieve a list of products belonging to a specific category. For reasons of simplicity, no form of pagination has been placed in this endpoint, but it might be reasonable to add it if there are many products in a category.
+- **URL Parameters**:
+    - `categoryId`: The unique identifier of the category.
+- **Success Response**: 200 OK
+- **Example Request**:
+
+    ```http
+    GET /products/category/1
+    ```
+- **Example Response**:
+    ```json
+    [
+        {
+            "id": 1,
+            "name": "prod1",
+            "image": "imgurl",
+            "price": 100,
+            "availableQuantity": 10,
+            "categoryId": 1
+        }
+    ]
+    ```
+
+### Orders
+Place an Order
+
+- **POST** /orders
+- **Description**: Place a new order with products and payment details.
+- **Body**:
+    ```json
+    {
+        "items": [
+            {
+            "productId": "1",
+            "quantity": 2
+            }
+        ],
+        "totalAmount": 200,
+        "paymentDetails": {
+            "cardNumber": "4111111111111111",
+            "expiryMonth": "12",
+            "expiryYear": "2023",
+            "cvv": "123"
+        }
+    }
+    ```
+- **Success Response**: 200 OK
+- **Example Response**:
+    ```json
+    {
+        "success": true,
+        "message": "Order processed successfully",
+        "orderId": 1,
+        "transactionId": "76566996"
+    }
+    ```
+
+List Orders
+
+- **GET** /orders
+- **Description**: Retrieve a list of all orders present in the database. This endpoint (implemented in this way) does not make much sense in a real application, it only serves to verify the correct saving of orders.
+- **Success Response**: 200 OK
+- **Example Request**:
+
+    ```http
+    GET /orders
+    ```
+- **Example Response**:
+    ```json
+    [
+        {
+            "items": [
+                {
+                    "productId": 1,
+                    "quantity": 1
+                }
+            ],
+            "totalAmount": 100,
+            "id": 1
+        },
+        {
+            "items": [
+                {
+                    "productId": 1,
+                    "quantity": 1
+                }
+            ],
+            "totalAmount": 100,
+            "id": 2
+        }
+    ]
+    ```
