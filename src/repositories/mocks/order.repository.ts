@@ -1,4 +1,4 @@
-import { Order } from "src/models/order.model";
+import { Order } from "../../models/order.model";
 import { IOrderRepository } from "../order.repository.interface";
 
 export class OrderRepository implements IOrderRepository {
@@ -8,8 +8,14 @@ export class OrderRepository implements IOrderRepository {
         this.orders = [];
     }
     
-    addOrder(order: Order) {
+    async addOrder(order: Order): Promise<number> {
+        order.id = this.generateId();
         this.orders.push(order);
+        return order.id;
+    }
+
+    private generateId(): number {
+        return this.orders.length + 1;
     }
     
 }

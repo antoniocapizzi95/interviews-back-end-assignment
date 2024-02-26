@@ -9,6 +9,19 @@ export class ProductRepository implements IProductRepository {
       {id: 1, name: 'prod1', image: 'imgurl', price: 100, availableQuantity: 10, categoryId: 1}
     ]
   }
+  
+  decreaseAvailableQuantity(productId: number, quantity: number) {
+    for (let i = 0; i < this.products.length; i++) {
+      if (this.products[i].id === productId) {
+        this.products[i].availableQuantity = this.products[i].availableQuantity - Math.abs(quantity);
+        break;
+      }
+    }
+  }
+
+  async findById(id: number): Promise<Product> {
+    return this.products.find(product => product.id === id);
+  }
 
   async findAll(page: number, limit: number): Promise<Product[]> {
     const startIndex = (page - 1) * limit;

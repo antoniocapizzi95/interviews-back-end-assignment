@@ -8,7 +8,7 @@ export class PaymentService implements IPaymentService {
     private readonly url: string;
     
     constructor() {
-        this.url = 'https://paymentservice.example.com/api/payment';
+        this.url = process.env.PAYMENT_SERVICE_URL;
     }
 
     async processPayment(paymentDetails: PaymentRequest): Promise<PaymentResponse> {
