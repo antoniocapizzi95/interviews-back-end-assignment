@@ -79,4 +79,8 @@ export class OrdersService {
       return { success: false, message: `Error creating order: ${error.message}`};
     }
   }
+
+  async getAllOrders(): Promise<Order[]> {
+    return this.orderRepository.getOrders();
+  }
 }

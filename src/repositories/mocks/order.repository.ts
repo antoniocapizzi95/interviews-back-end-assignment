@@ -14,6 +14,10 @@ export class OrderRepository implements IOrderRepository {
         return order.id;
     }
 
+    async getOrders(): Promise<Order[]> {
+        return this.orders;
+    }
+
     private generateId(): number {
         return this.orders.length + 1;
     }
