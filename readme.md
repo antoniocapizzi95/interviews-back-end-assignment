@@ -272,3 +272,15 @@ List Orders
         }
     ]
     ```
+
+## Testing
+
+Some unit tests have been developed for services containing methods with logic.
+
+To run automated tests (developer with Jest), use the following command:
+
+    npm run test
+
+## Postman Collection
+
+In the repository's root folder, you will find a "postman" directory that contains a Postman collection. This collection allows you to test the project locally.

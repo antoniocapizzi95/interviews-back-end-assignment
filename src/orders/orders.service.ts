@@ -11,8 +11,14 @@ import { PaymentResponse } from '../models/payment-response.model';
 @Injectable()
 export class OrdersService {
   private readonly paymentService: IPaymentService;
-  constructor(private paymentServiceFactory: PaymentServiceFactory, private productRepository: ProductRepository, private orderRepository: OrderRepository) {
-    this.paymentService =this.paymentServiceFactory.createPaymentService('Service1');
+  constructor(
+    private paymentServiceFactory: PaymentServiceFactory,
+    private productRepository: ProductRepository,
+    private orderRepository: OrderRepository,
+    private disablePayment: boolean
+    ) {
+    this.paymentService = this.paymentServiceFactory.createPaymentService('Service1');
+    this.disablePayment = process.env.DISABLE_PAYMENT === 'true'
   }
 
   async validateOrderItems(order: OrderRequest) {
@@ -62,7 +68,7 @@ export class OrdersService {
         status: 'approved'
       }
 
-      if (!process.env.DISABLE_PAYMENT) {
+      if (!this.disablePayment) {
         paymentResponse = await this.paymentService.processPayment({
           ...orderReq.paymentDetails,
           amount: orderReq.totalAmount,

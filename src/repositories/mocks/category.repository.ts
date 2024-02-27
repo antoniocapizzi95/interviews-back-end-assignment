@@ -6,7 +6,9 @@ export class CategoryRepository implements ICategoryRepository {
   
   constructor() {
     this.categories = [
-      {id: 1, name: 'category1'}
+      {id: 1, name: 'category1'},
+      {id: 2, name: 'category2'},
+      {id: 3, name: 'category3'}
     ]
   }
 
