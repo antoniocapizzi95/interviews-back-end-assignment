@@ -13,7 +13,7 @@ describe('OrdersService', () => {
     paymentServiceFactory = new PaymentServiceFactory();
     productRepository = new ProductRepository();
     orderRepository = new OrderRepository();
-    ordersService = new OrdersService(paymentServiceFactory, productRepository, orderRepository, true);
+    ordersService = new OrdersService(paymentServiceFactory, productRepository, orderRepository);
     process.env = {
       DISABLE_PAYMENT: 'true'
     };

@@ -11,16 +11,19 @@ import { PaymentResponse } from '../models/payment-response.model';
 @Injectable()
 export class OrdersService {
   private readonly paymentService: IPaymentService;
+  private readonly disablePayment: boolean
   constructor(
     private paymentServiceFactory: PaymentServiceFactory,
     private productRepository: ProductRepository,
-    private orderRepository: OrderRepository,
-    private disablePayment: boolean
+    private orderRepository: OrderRepository
     ) {
-    this.paymentService = this.paymentServiceFactory.createPaymentService('Service1');
-    this.disablePayment = process.env.DISABLE_PAYMENT === 'true'
+      // in this case the use of the 'factory' pattern is only for illustrative purposes
+      // it would be more useful if there were more payment services available
+      this.paymentService = this.paymentServiceFactory.createPaymentService('Service1');
+      this.disablePayment = process.env.DISABLE_PAYMENT === 'true'
   }
 
+  // this method validate the order creation request, if only one item is invalid, the entire order fails 
   async validateOrderItems(order: OrderRequest) {
     for (const item of order.items) {
       const product = await this.productRepository.findById(item.productId);
